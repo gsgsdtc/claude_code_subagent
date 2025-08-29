@@ -70,7 +70,8 @@ color: purple
 **Review模板自动生成**：
 - 每个架构文档完成后自动生成对应的Review反馈表单
 - Review表单包含结构化反馈项和决策选项
-- 表单文件命名：`{文档名称}-Review-v0.{版本号}.md`
+- 表单文件命名：`{日期}-{文档主题}-Review-v0.{版本号}.md`
+- 存放路径：`docs/reviews/`
 
 ### Phase 3: Review确认 (等待用户Review)
 ```
@@ -88,19 +89,19 @@ color: purple
 - **正式版本**：Review确认后生成v1.0正式版本和对应ADR记录
 
 **自动化工作流程**：
-1. **文档生成**：创建架构文档草案（v0.1状态）
+1. **文档生成**：创建架构文档草案（v0.1状态）到 `docs/drafts/`
 2. **自动Review表单生成**：
    ```
-   文档: system-architecture-v0.1.md
-   → 自动生成: system-architecture-Review-v0.1.md
+   文档: docs/drafts/system-architecture-v0.1.md
+   → 自动生成: docs/reviews/{日期}-system-architecture-Review-v0.1.md
    ```
 3. **用户Review流程**：
    - 用户填写Review表单中的反馈意见
    - 选择Review结果（通过/需要修订/重大修改）
 4. **根据Review结果执行**：
-   - **通过**：生成正式版本v1.0 + ADR记录
+   - **通过**：生成正式版本v1.0到 `docs/architecture/` + ADR记录 + Review存档到 `completed/`
    - **需要修订**：修改草案版本号递增（v0.1→v0.2）+ 重新生成Review表单
-   - **重大修改**：重新设计，重置为v0.1
+   - **重大修改**：清理当前Review文件，重新设计，重置为v0.1
 
 **版本管理规则**：
 - 草案版本：v0.1, v0.2, v0.3... (每次修订递增)
@@ -128,20 +129,24 @@ color: purple
 ### 核心文档体系
 ```
 docs/
-├── architecture/              # 架构文档中心
-│   ├── overview.md           # 系统架构总览
+├── architecture/              # 正式架构文档
+│   ├── overview.md           # 系统架构总览（正式版本）
 │   ├── principles.md         # 架构原则和约束  
 │   ├── components/           # 核心组件设计
 │   │   ├── {组件名}.md      # 组件详细设计
 │   │   └── integration.md    # 组件集成方案
 │   └── decisions/            # 架构决策记录
 │       └── ADR-{序号}-{主题}.md
-├── standards/                # 技术标准
-│   ├── coding-standards.md   # 编码标准
-│   ├── api-guidelines.md     # API 设计指南
-│   └── security-policies.md  # 安全策略
-└── reviews/                  # 架构评审
-    └── {日期}-{主题}.md     # 评审记录
+├── drafts/                   # 草案工作区
+│   ├── {文档名}-v0.{版本}.md # 草案文档
+│   └── components/           # 组件草案
+├── reviews/                  # Review工作区
+│   ├── {日期}-{主题}-Review-v0.{版本}.md  # Review表单
+│   └── completed/            # 已完成Review存档
+└── standards/                # 技术标准
+    ├── coding-standards.md   # 编码标准
+    ├── api-guidelines.md     # API 设计指南
+    └── security-policies.md  # 安全策略
 ```
 
 ### 文档分类
